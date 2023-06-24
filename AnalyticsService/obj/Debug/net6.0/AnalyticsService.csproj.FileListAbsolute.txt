@@ -1,0 +1,15 @@
+D:\Fakultet\8. Semestar\1 Servisno Orijentisane Arhitekture\SoaProject2\AnalyticsService\obj\Debug\net6.0\AnalyticsService.csproj.AssemblyReference.cache
+D:\Fakultet\8. Semestar\1 Servisno Orijentisane Arhitekture\SoaProject2\AnalyticsService\obj\Debug\net6.0\AnalyticsService.GeneratedMSBuildEditorConfig.editorconfig
+D:\Fakultet\8. Semestar\1 Servisno Orijentisane Arhitekture\SoaProject2\AnalyticsService\obj\Debug\net6.0\AnalyticsService.AssemblyInfoInputs.cache
+D:\Fakultet\8. Semestar\1 Servisno Orijentisane Arhitekture\SoaProject2\AnalyticsService\obj\Debug\net6.0\AnalyticsService.AssemblyInfo.cs
+D:\Fakultet\8. Semestar\1 Servisno Orijentisane Arhitekture\SoaProject2\AnalyticsService\obj\Debug\net6.0\AnalyticsService.csproj.CoreCompileInputs.cache
+D:\Fakultet\8. Semestar\1 Servisno Orijentisane Arhitekture\SoaProject2\AnalyticsService\bin\Debug\net6.0\AnalyticsService.exe
+D:\Fakultet\8. Semestar\1 Servisno Orijentisane Arhitekture\SoaProject2\AnalyticsService\bin\Debug\net6.0\AnalyticsService.deps.json
+D:\Fakultet\8. Semestar\1 Servisno Orijentisane Arhitekture\SoaProject2\AnalyticsService\bin\Debug\net6.0\AnalyticsService.runtimeconfig.json
+D:\Fakultet\8. Semestar\1 Servisno Orijentisane Arhitekture\SoaProject2\AnalyticsService\bin\Debug\net6.0\AnalyticsService.dll
+D:\Fakultet\8. Semestar\1 Servisno Orijentisane Arhitekture\SoaProject2\AnalyticsService\bin\Debug\net6.0\AnalyticsService.pdb
+D:\Fakultet\8. Semestar\1 Servisno Orijentisane Arhitekture\SoaProject2\AnalyticsService\obj\Debug\net6.0\AnalyticsService.dll
+D:\Fakultet\8. Semestar\1 Servisno Orijentisane Arhitekture\SoaProject2\AnalyticsService\obj\Debug\net6.0\refint\AnalyticsService.dll
+D:\Fakultet\8. Semestar\1 Servisno Orijentisane Arhitekture\SoaProject2\AnalyticsService\obj\Debug\net6.0\AnalyticsService.pdb
+D:\Fakultet\8. Semestar\1 Servisno Orijentisane Arhitekture\SoaProject2\AnalyticsService\obj\Debug\net6.0\AnalyticsService.genruntimeconfig.cache
+D:\Fakultet\8. Semestar\1 Servisno Orijentisane Arhitekture\SoaProject2\AnalyticsService\obj\Debug\net6.0\ref\AnalyticsService.dll

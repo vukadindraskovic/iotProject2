@@ -1,0 +1,71 @@
+services:
+  # emqx:
+    # image: emqx/emqx:latest
+    # container_name: emqx
+    # environment:
+      # - "emqx_node_name=emqx@node1.emqx.io"
+      # - "emqx_cluster__discovery_strategy=static"
+      # - "emqx_cluster__static__seeds=[emqx@node1.emqx.io,emqx@node2.emqx.io]"
+    # healthcheck:
+      # test: ["cmd", "/opt/emqx/bin/emqx_ctl", "status"]
+      # interval: 5s
+      # timeout: 25s
+      # retries: 5
+    # networks:
+      # emqx-bridge:
+        # aliases:
+          # - node1.emqx.io
+    # ports:
+      # - 1883:1883
+      # - 8083:8083
+      # - 8084:8084
+      # - 8883:8883
+      # - 18083:18083 
+
+  manager:
+    image: emqx/ekuiper-manager:1.8.0
+    container_name: manager
+    ports:
+      - "9082:9082"
+    restart: unless-stopped
+    environment:
+      DEFAULT_EKUIPER_ENDPOINT: "http://ekuiper:9081" 
+  ekuiper:
+    image: lfedge/ekuiper:1.8.0
+    ports:
+      - "9081:9081"
+      - "127.0.0.1:20498:20498"
+    container_name: ekuiper
+    hostname: ekuiper
+    restart: unless-stopped
+    user: root
+    volumes:
+      - /tmp/data:/kuiper/data
+      - /tmp/log:/kuiper/log
+    environment:
+      MQTT_SOURCE__DEFAULT__SERVER: "tcp://broker.emqx.io:1883"
+      KUIPER__BASIC__CONSOLELOG: "true"
+      KUIPER__BASIC__IGNORECASE: "false"
+  
+  sensor_dummy:
+    build:
+      context: .
+      dockerfile: ./sensor-dummy-service/Dockerfile
+      
+  analytics:
+    build:
+      context: .
+      dockerfile: ./AnalyticsService/Dockerfile
+  
+  influxdb:
+    image: influxdb:latest
+    networks:
+      - default
+    ports:
+      - '8086:8086'
+    volumes:
+      - ./influxdb-storage:/var/lib/influxdb
+      
+networks:
+  emqx-bridge:
+    driver: bridge
