@@ -4,52 +4,56 @@ using System.Text;
 using AnalyticsService;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
+using System.Drawing;
+using InfluxDB.Client;
 using InfluxDB.Client.Api.Domain;
 using InfluxDB.Client.Writes;
-using InfluxDB.Client;
+using System.Net.Sockets;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 var sensorDummyTopic = "sensor_dummy/values";
-var eKuiperTopic = "eKuiper/anomalies";
+var eKuiperTopic = "eKuiper/anomalies"; // broker.emqx.io
+string address = "192.168.100.6";
+var port = 1883;
+var client = InfluxDBClientFactory.Create(url: "http://192.168.100.6:8086", "admin", "adminadmin".ToCharArray());
+int i = 1;
 
 var mqttService = MqttService.Instance();
 
-await mqttService.ConnectAsync("broker.emqx.io");
+await mqttService.ConnectAsync(address, port);
 await mqttService.SubsribeToTopicsAsync(new List<string> { sensorDummyTopic, eKuiperTopic });
 
-Task ApplicationMessageReceivedAsync(MqttApplicationMessageReceivedEventArgs e)
+async Task ApplicationMessageReceivedAsync(MqttApplicationMessageReceivedEventArgs e)
 {
     string payload = Encoding.UTF8.GetString(e.ApplicationMessage.Payload);
     if (e.ApplicationMessage.Topic == sensorDummyTopic)
     {
         mqttService.PublishMessage("analytics/values", payload);
-        return Task.CompletedTask;
+        return;
     }
 
-    /*var data = (JObject)JsonConvert.DeserializeObject(payload);
-    string id = data.SelectToken("id").Value<string>();
+    Console.WriteLine($"eKuiper send: {payload}");
+    var data = (JObject)JsonConvert.DeserializeObject(payload);
     string roomId = data.SelectToken("room_id").Value<string>();
     string date = data.SelectToken("noted_date").Value<string>();
     int temperature = data.SelectToken("temp").Value<int>();
-    string outIn = data.SelectToken("out_in").Value<string>();
 
-    var client = new InfluxDBClient("http://127.0.0.1:8086", "L5_mcTPl70ui3VhT98P-nbTAZfOd1k8TX6KawjLoL_C7Pwf_QUbQVlzt2TvWq_WYxBb5GJVUTwtO2QVXtzZojA==");
+    await WriteToDatabase(temperature, date, roomId);
+}
 
-    using (var writeApi = client.GetWriteApi())
-    {
-        var point = PointData.Measurement("temperature")
-            .Tag("location", "in")
-            .Field("value", temperature)
-            .Timestamp(DateTime.Parse(date), WritePrecision.Ns);
+async Task WriteToDatabase(int temp, string date, string roomId)
+{
+    var point = PointData
+        .Measurement("temperature")
+        .Tag("room", roomId)
+        .Tag("date", date)
+        .Field("celsius_degrees", temp)
+        .Timestamp(DateTime.UtcNow, WritePrecision.Ns);
 
-        writeApi.WritePoint(point, "iot2", "organization");
-        Console.WriteLine("SRECA SRECA RADOST");
-    }*/
-
-    Console.WriteLine(payload);
-
-    return Task.CompletedTask;
+    await client.GetWriteApiAsync().WritePointAsync(point, "iot2", "organization");
+    Console.WriteLine($"Write in InfluxDb: temperature{i}");
+    i++;
 }
 
 mqttService.AddApplicationMessageReceived(ApplicationMessageReceivedAsync);

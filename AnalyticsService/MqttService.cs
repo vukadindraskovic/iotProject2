@@ -39,11 +39,12 @@ public class MqttService
         mqttClient = mqttFactory.CreateMqttClient();
     }
           
-    public async Task ConnectAsync(string brokerAddres)
+    public async Task ConnectAsync(string brokerAddress, int port)
     {
         var mqttClientOptions = new MqttClientOptionsBuilder()
-                                    .WithTcpServer("broker.emqx.io")
+                                    .WithTcpServer(brokerAddress, port)
                                     .Build();
+
         await mqttClient.ConnectAsync(mqttClientOptions, CancellationToken.None);
         Console.WriteLine("The MQTT client is connected.");
     }
@@ -51,7 +52,7 @@ public class MqttService
     public async Task SubsribeToTopicsAsync(List<string> topics)
     {
         topics.ForEach(async t => await mqttClient.SubscribeAsync(t));
-        Console.WriteLine("MQTT client subscribed to topic.");
+        Console.WriteLine("MQTT client subscribed to topics.");
     }
 
     public async Task PublishMessage(string topic, string payload)
@@ -62,6 +63,7 @@ public class MqttService
             .Build();
 
         await mqttClient.PublishAsync(applicationMessage, CancellationToken.None);
+        Console.WriteLine("MQTT client publibshed message.");
     }
 
     public void AddApplicationMessageReceived(Func<MqttApplicationMessageReceivedEventArgs, Task> callback)
