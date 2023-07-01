@@ -64,7 +64,6 @@ services:
     build:
       context: .
       dockerfile: ./AnalyticsService/Dockerfile
-    restart: on-failure
     depends_on:
       emqx:
         condition: service_healthy
